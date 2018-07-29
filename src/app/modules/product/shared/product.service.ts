@@ -66,15 +66,32 @@ export class ProductService {
     return this.http.post(searchUrl, formData).pipe(map((response: any) => response.json()));
   }
 
+
+  moreImagesUpload(files){
+    let searchUrl = 'http://localhost:5000/products/moreImagesUpload';
+    let headers = new Headers();
+    headers.append('Content-Type', 'multipart/form-data; boundary=------WebKitFormBoundary'+ Math.random());
+    headers.append('Accept','application/json');
+    let options = new RequestOptions({
+      headers: headers
+    });
+    let formData = new FormData();
+    for(let i =0; i < files.length; i++){
+      formData.append("uploads[]", files[i], files[i]['name']);
+    }
+    return this.http.post(searchUrl, formData).pipe(map((response: any) => response.json()));
+  }
+
+
   addProduct(productData) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       let searchUrl = 'http://localhost:5000/products/addProduct';
-    return this.http.post(searchUrl, JSON.stringify({ productData: productData }), this.options).pipe(map((response: any) => response.json()));
+    return this.http.post(searchUrl, productData , this.options).pipe(map((response: any) => response.json()));
   }
 
   updateProduct(productData) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       let searchUrl = 'http://localhost:5000/products/updateProduct';
-    return this.http.put(searchUrl, JSON.stringify({ productData: productData}), this.options).pipe(map((response: any) => response.json()));
+    return this.http.put(searchUrl, productData, this.options).pipe(map((response: any) => response.json()));
   }
 }

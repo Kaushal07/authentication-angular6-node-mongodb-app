@@ -5,9 +5,10 @@ const productModel = function() {
 	const productSchema = mongoose.Schema({
 		ProductName : String,
 		ProductPrice : String,
-    ProductImage : Object
+    ProductImage : Object,
+    MoreProductImages:Array
+  });
 
-	});
 	return mongoose.model('Product', productSchema);
 };
 

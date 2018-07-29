@@ -12,10 +12,8 @@ let storage = multer.diskStorage({
   }
 });
 
-
-
 let upload = multer({ storage: storage }).array('file', 1);
-
+let moreImagesUpload = multer({ storage: storage }).array('uploads[]', 12);
 
 module.exports = (router) => {
 
@@ -25,6 +23,16 @@ module.exports = (router) => {
         return res.send({status:'error', message:"Something went wrong!",error:err});
       }
       return res.send({status:'success', message:"File uploaded successfully!.", fileName:req.files[0].originalname});
+    });
+
+  });
+
+  router.post('/moreImagesUpload',function(req, res) {
+    moreImagesUpload(req, res, function(err) {
+      if (err) {
+        return res.send({status:'error', message:"Something went wrong!",error:err});
+      }
+      return res.send({status:'success', message:"File uploaded successfully!.", files:req.files});
     });
 
   });
@@ -69,8 +77,12 @@ module.exports = (router) => {
     });
 
     router.post('/addProduct',function (req, res) {
-        var productData = req.body.productData;
-        var product = new Product(productData);
+      let product = new Product({
+        ProductName:req.body.ProductName,
+        ProductPrice:req.body.ProductPrice,
+        ProductImage:req.body.ProductImage,
+        MoreProductImages:req.body.MoreProductImages
+      });
         product.save(function (err, createdProduct) {
             if (err) {
                 res.send({
@@ -88,7 +100,7 @@ module.exports = (router) => {
     });
 
     router.put('/updateProduct', function (req, res) {
-        const productData = req.body.productData;
+        const productData = req.body;
         Product.findById(productData._id, function (err, product) {
             if (err) {
                 res.send(err);
@@ -96,7 +108,8 @@ module.exports = (router) => {
                 product.ProductName = productData.ProductName;
                 product.ProductPrice = productData.ProductPrice;
                 product.ProductImage = productData.ProductImage;
-                product.save(function (err, book) {
+                product.MoreProductImages = req.body.MoreProductImages;
+              product.save(function (err, book) {
                     if (err) {
                         res.send(err);
                     } else {
