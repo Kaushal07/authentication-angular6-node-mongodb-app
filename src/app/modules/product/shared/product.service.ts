@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http,  Headers, RequestOptions } from '@angular/http';
 import {map} from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import {apiUrl} from '../../../shared/constant';
 
 @Injectable()
 export class ProductService {
@@ -37,24 +37,24 @@ export class ProductService {
 
     getAllProducts() {
     this.createAuthenticationHeaders(); // Create headers before sending to API
-         let searchUrl = 'http://localhost:5000/products/getProducts';
+         let searchUrl = `${apiUrl}/getProducts`;
     return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 
   getProductById(id) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
-      let searchUrl = 'http://localhost:5000/products/singleProduct/' + id;
+      let searchUrl = `${apiUrl}/singleProduct/${id}`;
     return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 
   deleteProductById(id) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
-      let searchUrl = 'http://localhost:5000/products/singleProduct?productId=' + id;
+      let searchUrl = `${apiUrl}/singleProduct?productId=${id}`;
     return this.http.delete(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 
   imageUpload(file){
-    let searchUrl = 'http://localhost:5000/products/imageUpload';
+    let searchUrl = `${apiUrl}/imageUpload`;
     let headers = new Headers();
     headers.append('Content-Type', 'multipart/form-data; boundary=------WebKitFormBoundary'+ Math.random());
     headers.append('Accept','application/json');
@@ -68,7 +68,7 @@ export class ProductService {
 
 
   moreImagesUpload(files){
-    let searchUrl = 'http://localhost:5000/products/moreImagesUpload';
+    let searchUrl = `${apiUrl}/moreImagesUpload`;
     let headers = new Headers();
     headers.append('Content-Type', 'multipart/form-data; boundary=------WebKitFormBoundary'+ Math.random());
     headers.append('Accept','application/json');
@@ -85,13 +85,13 @@ export class ProductService {
 
   addProduct(productData) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
-      let searchUrl = 'http://localhost:5000/products/addProduct';
+      let searchUrl = `${apiUrl}/addProduct`;
     return this.http.post(searchUrl, productData , this.options).pipe(map((response: any) => response.json()));
   }
 
   updateProduct(productData) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
-      let searchUrl = 'http://localhost:5000/products/updateProduct';
+      let searchUrl = `${apiUrl}/updateProduct`;
     return this.http.put(searchUrl, productData, this.options).pipe(map((response: any) => response.json()));
   }
 }

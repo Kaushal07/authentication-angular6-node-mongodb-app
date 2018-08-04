@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {AddEditProductComponent} from './add-edit-product/add-edit-product.component';
 import {ListProductComponent} from './list-product/list-product.component';
 import {DataResolve} from '../../@shared/services/data.resolve';
+import {apiUrl} from '../../shared/constant';
 
 const routes: Routes = [
   {
@@ -17,13 +18,13 @@ const routes: Routes = [
   {
     path: 'list',
     component: ListProductComponent,
-    data: { apiPath: 'http://localhost:5000/products/getProducts'},
+    data: { apiPath: `${apiUrl}/getProducts`},
     resolve: { products : DataResolve },
   },
   {
     path: 'edit/:id',
     component: AddEditProductComponent,
-    data: { apiPath: 'http://localhost:5000/products/singleProduct/:id'},
+    data: { apiPath: `${apiUrl}/singleProduct/:id`},
     resolve: { product : DataResolve },
   }
 ];

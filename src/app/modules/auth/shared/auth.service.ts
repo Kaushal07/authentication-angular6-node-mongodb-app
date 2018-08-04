@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { tokenNotExpired } from 'angular2-jwt';
 import {map} from 'rxjs/operators';
+import {apiUrl} from '../../../shared/constant';
 
 @Injectable()
 export class AuthService {
@@ -35,12 +36,12 @@ export class AuthService {
     }
 
     registerUser(userObj) {
-        let searchUrl = 'http://localhost:5000/authentication/register';
+        let searchUrl = `${apiUrl}/register`;
         return this.http.post(searchUrl, userObj).pipe(map((response: any) => response.json()));
     }
 
     login(user) {
-        let searchUrl = 'http://localhost:5000/authentication/login';
+        let searchUrl = `${apiUrl}/login`;
         return this.http.post(searchUrl, user).pipe(map((response: any) => response.json()));
     }
 
