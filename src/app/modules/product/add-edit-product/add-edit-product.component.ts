@@ -57,7 +57,7 @@ export class AddEditProductComponent implements OnInit {
     this.productService.imageUpload(this.filesToUpload).subscribe((res)=>{
       if(res.status === 'success'){
         this.imageUploaded = true;
-        this.ProductObj.ProductImage = res.fileName;
+        this.ProductObj.ProductImage = res.filePath;
       }else{
         this.imageUploaded = false;
         this.noFileSelected = false;
@@ -87,7 +87,7 @@ export class AddEditProductComponent implements OnInit {
         this.moreImagesUploaded = true;
         this.moreUploadedFiles = res.files;
         _.each(this.moreUploadedFiles,(file)=>{
-          this.ProductObj.MoreProductImages.push({originalname:file.originalname});
+          this.ProductObj.MoreProductImages.push({path:file.path});
         });
       }else{
         this.moreImagesUploaded = false;

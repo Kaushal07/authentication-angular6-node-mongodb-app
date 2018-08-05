@@ -23,7 +23,7 @@
         <input class="form-control" type="file" name="productImage" id="productImage"
                (change)="getProductImage($event)"
                required>
-        <img *ngIf="ProductObj.ProductImage" src="../../../../server/uploads/{{ProductObj.ProductImage}}" style="width: 100px;height: 100px;margin-top: 10px;">
+        <img *ngIf="ProductObj.ProductImage" src="/server/{{ProductObj.ProductImage}}" style="width: 100px;height: 100px;margin-top: 10px;">
         <span class="alert-danger error-msg" *ngIf="noFileSelected">
           Please upload product image.
         </span>
@@ -34,8 +34,8 @@
         <input class="form-control" type="file" name="productMoreImage" id="productMoreImage"
                (change)="getProductsMoreImage($event)" multiple required>
         <div class="row col-md-6">
-          <div class="more-files" *ngFor="let file of moreUploadedFiles">
-            <img *ngIf="moreUploadedFiles.length" src='../../../../server/uploads/{{file.originalname}}' style="width:150%">
+          <div class="more-files" *ngFor="let files of moreUploadedFiles">
+            <img *ngIf="moreUploadedFiles.length" src='/server/{{files.path}}' style="width:150%">
           </div>
         </div>
         <span class="alert-danger error-msg" *ngIf="noMoreFileSelected">
