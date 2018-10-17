@@ -23,6 +23,7 @@ export class AddEditProductComponent implements OnInit {
   moreImagesUploaded:boolean =true;
   moreFilesToUpload:Array<File>= [];
   moreUploadedFiles:any = [];
+  loginUserInfo:any;
 
 
 
@@ -31,6 +32,10 @@ export class AddEditProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(localStorage.getItem('user')){
+      this.loginUserInfo = JSON.parse(localStorage.getItem('user'));
+      this.ProductObj['UserId'] = this.loginUserInfo._id;
+      }
     if(this.route.snapshot.data['product']) {
       this.editObjData = this.route.snapshot.data['product'];
       this.ProductObj = this.editObjData;

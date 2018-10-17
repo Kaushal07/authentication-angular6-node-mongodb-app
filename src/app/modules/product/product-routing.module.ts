@@ -18,8 +18,6 @@ const routes: Routes = [
   {
     path: 'list',
     component: ListProductComponent,
-    data: { apiPath: `${apiUrl}/getProducts`},
-    resolve: { products : DataResolve },
   },
   {
     path: 'edit/:id',
@@ -33,4 +31,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
+
 export class ProductRoutingModule {}

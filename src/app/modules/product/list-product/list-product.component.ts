@@ -11,16 +11,25 @@ import {ProductService} from '../shared/product.service';
 export class ListProductComponent implements OnInit {
   productList:any;
   isProducts:any;
+  loginUserInfo:any;
   constructor(private router: Router, private http: Http, private route: ActivatedRoute, private productService: ProductService) {
   }
 
   ngOnInit() {
-    this.productList = this.route.snapshot.data['products'];
-    this.checkProductListLength();
+    if(localStorage.getItem('user')){
+      this.loginUserInfo = JSON.parse(localStorage.getItem('user'));
+    }
+    this.productService.getAllProducts(this.loginUserInfo._id)
+      .subscribe((res)=>{
+        this.productList = res;
+        this.checkProductListLength();
+
+      },(e)=>{
+        });
     }
 
   delete(id){
-    this.productService.deleteProductById(id).subscribe((res)=>{
+    this.productService.deleteProductById(this.loginUserInfo._id, id).subscribe((res)=>{
           this.getProductList();
     },(e)=>{
 
@@ -36,7 +45,7 @@ export class ListProductComponent implements OnInit {
   }
 
   getProductList(){
-    this.productService.getAllProducts().subscribe((res)=>{
+    this.productService.getAllProducts(this.loginUserInfo._id).subscribe((res)=>{
       this.productList = res;
       this.checkProductListLength();
     },(e)=>{

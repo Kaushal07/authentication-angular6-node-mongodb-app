@@ -35,9 +35,9 @@ export class ProductService {
         this.authToken = localStorage.getItem('token');
     }
 
-    getAllProducts() {
+    getAllProducts(id) {
     this.createAuthenticationHeaders(); // Create headers before sending to API
-         let searchUrl = `${apiUrl}/getProducts`;
+         let searchUrl = `${apiUrl}/getProducts?UserId=${id}`;
     return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 
@@ -47,9 +47,9 @@ export class ProductService {
     return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 
-  deleteProductById(id) {
+  deleteProductById(userId,id) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
-      let searchUrl = `${apiUrl}/singleProduct?productId=${id}`;
+      let searchUrl = `${apiUrl}/singleProduct?productId=${id}&userId=${userId}`;
     return this.http.delete(searchUrl, this.options).pipe(map((response: any) => response.json()));
   }
 

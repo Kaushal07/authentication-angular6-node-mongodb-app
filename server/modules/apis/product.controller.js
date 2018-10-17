@@ -15,7 +15,7 @@ class ProductController{
   }
 
   getAllProducts(req,res){
-    Product.find({})
+    Product.find({UserId:req.query.UserId})
       .then((products) => {
         res.send(products);
       })
@@ -30,6 +30,7 @@ class ProductController{
 
   addProduct(req,res) {
     let product = new Product({
+      UserId: req.body.UserId,
       ProductName: req.body.ProductName,
       ProductPrice: req.body.ProductPrice,
       ProductImage: req.body.ProductImage,
@@ -69,8 +70,9 @@ class ProductController{
 
   updateProduct(req,res) {
     const productData = req.body;
-    Product.findById(productData._id)
+    Product.findById({UserId: productData._id})
       .then((product) => {
+        product.UserId = productData.UserId;
         product.ProductName = productData.ProductName;
         product.ProductPrice = productData.ProductPrice;
         product.ProductImage = productData.ProductImage;
@@ -100,7 +102,7 @@ class ProductController{
     let defer = q.defer();
     let productId = req.query.productId;
 
-    Product.findById(productId)
+    Product.findById({_id:productId})
       .then((foundItem) => {
         if (!foundItem) {
           return res.send({

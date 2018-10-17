@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 
 const productModel = function() {
 	const productSchema = mongoose.Schema({
-		ProductName : String,
-		ProductPrice : String,
-    ProductImage : Object,
+    UserId:String,
+    ProductName : String,
+    ProductPrice : String,
+    ProductImage : String,
     MoreProductImages:Array
   });
 
