@@ -3,9 +3,11 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {RouteModule} from './app.route';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {SharedModule} from './@shared/shared.module';
 import {HeaderComponent} from './@shared/header/header.component';
+import {SocketService} from './shared/socket.service';
+import {ChatService} from './shared/chat.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,11 +17,11 @@ import {HeaderComponent} from './@shared/header/header.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
     SharedModule,
-    RouteModule
+    RouteModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [SocketService,ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

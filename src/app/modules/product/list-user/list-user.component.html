@@ -1,0 +1,14 @@
+<div class="userlist-panel-body">
+  <ul class="userlist-chat">
+    <div *ngIf="chatListUsers.length">
+    <li class="left clearfix" *ngFor="let user of chatListUsers" (click)="openChatPopUp(user)">
+      <div class="userlist-chat-body clearfix">
+        <div class="header">
+          <strong class="primary-font username">{{user.UserName}}</strong><br />
+          <span [ngClass]="user.Online === 'Y' ? 'green-dot' : 'red-dot'"> </span>
+        </div>
+      </div>
+    </li>
+    </div>
+  </ul>
+</div>

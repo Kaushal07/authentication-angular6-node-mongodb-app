@@ -94,4 +94,13 @@ export class ProductService {
       let searchUrl = `${apiUrl}/updateProduct`;
     return this.http.put(searchUrl, productData, this.options).pipe(map((response: any) => response.json()));
   }
+
+
+
+
+  // getSystemUsers(id){
+  //   this.createAuthenticationHeaders(); // Create headers before sending to API
+  //   let searchUrl = `${apiUrl}/system-users?userId=${id}`;
+  //   return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
+  // }
 }

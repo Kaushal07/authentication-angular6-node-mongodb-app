@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { tokenNotExpired } from 'angular2-jwt';
 import {map} from 'rxjs/operators';
 import {apiUrl} from '../../../shared/constant';
+import set = Reflect.set;
 
 @Injectable()
 export class AuthService {
@@ -10,6 +11,7 @@ export class AuthService {
     authToken:any;
     user:any;
     options;
+    userId:any;
 
 
     static get parameters() {
@@ -31,6 +33,16 @@ export class AuthService {
             })
         });
     }
+
+  getUser(): string {
+    if (this.userId  === null) {
+      setTimeout(()=>{
+        this.userId = localStorage.getItem('user');
+        });
+    }
+    return this.userId;
+  }
+
     loadToken() {
         this.authToken = localStorage.getItem('token'); // Get token and asssign to variable to be used elsewhere
     }
@@ -43,6 +55,11 @@ export class AuthService {
     login(user) {
         let searchUrl = `${apiUrl}/login`;
         return this.http.post(searchUrl, user).pipe(map((response: any) => response.json()));
+    }
+
+  checkUserName(username) {
+    let searchUrl = `${apiUrl}/check-username?UserName=${username}`;
+    return this.http.get(searchUrl, this.options).pipe(map((response: any) => response.json()));
     }
 
     // Function to store user's data in client local storage

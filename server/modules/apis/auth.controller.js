@@ -6,9 +6,13 @@ class AuthController {
   constructor(app) {
     app.post('/register', this.register);
     app.post('/login', this.login);
+    app.get('/check-username',this.checkUserNameAvailability);
   }
 
   register(req, res) {
+    if (!req.body.UserName) {
+      return res.send({success: false, message: 'You must provide a username'});
+    }
     if (!req.body.Email) {
       return res.send({success: false, message: 'You must provide an e-mail'});
     }
@@ -17,14 +21,17 @@ class AuthController {
     }
 
     let newUser = new Auth({
+      UserName:req.body.UserName,
       Email: req.body.Email.toLowerCase(),
-      Password: req.body.Password
+      Password: req.body.Password,
+      Online: 'N',
+      SocketId: ''
     });
 
     Auth.findOne({Email: newUser.Email})
       .then((user) => {
         if (user) {
-          return res.send({success: false, message: " User already Exist."});
+          return res.send({success: false, message: " User already Exist. try with different email."});
         }
         return newUser;
       })
@@ -71,6 +78,20 @@ class AuthController {
       }).catch((e) => {
       res.send({success: false, Error: e, message: "Error while logging user."});
     })
+  }
+
+  checkUserNameAvailability(req,res){
+     let username = req.query.UserName;
+     Auth.findOne({UserName: username})
+      .then((user) => {
+        if (user) {
+          return res.send({success: false, message: " Username not available."});
+        }
+        return res.send({success: true, message: " Username available."});
+      })
+       .catch((e)=>{
+            res.send({success: false, Error: e, message: "Error while checking username."});
+       })
   }
 }
 

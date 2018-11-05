@@ -5,67 +5,79 @@ import {AuthService} from '../shared/auth.service';
 
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html'
+  selector: 'app-register',
+  templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit {
-    EMAIL_REGEX = '^[a-zA-Z0-9_]([a-zA-Z0-9._+-]|)*@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
-    Email:any;
-    Password:any;
-    ConfirmPassword:any;
-    isPasswordMatch:boolean = true;
-    isSuccessMessage :boolean = false;
-    isErrorMessage :boolean = false;
-    errorMessage:any;
-    successMessage:any;
+  EMAIL_REGEX = '^[a-zA-Z0-9_]([a-zA-Z0-9._+-]|)*@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+  UserName: any;
+  Email: any;
+  Password: any;
+  ConfirmPassword: any;
+  isPasswordMatch: boolean = true;
+  isSuccessMessage: boolean = false;
+  isErrorMessage: boolean = false;
+  errorMessage: any;
+  successMessage: any;
+  isUsernameAvl:boolean;
+  userNameAvailability:any;
 
-    constructor(private router: Router, private http: Http, private route: ActivatedRoute , private authService:AuthService) {}
+  constructor(private router: Router, private http: Http, private route: ActivatedRoute, private authService: AuthService) {}
 
-    ngOnInit() {
+  ngOnInit() {}
 
+  checkPasswords() {
+    if (this.Password === this.ConfirmPassword) {
+      this.isPasswordMatch = true;
+      return true;
+    } else {
+      this.isPasswordMatch = false;
+      return false;
     }
+  }
 
-    checkPasswords(){
-        if(this.Password === this.ConfirmPassword){
-            this.isPasswordMatch = true;
-            return true;
-        }else{
-            this.isPasswordMatch = false;
-            return false;
+  passwordInputValues() {
+    this.isPasswordMatch = true;
+  }
+
+  register(form) {
+    if (form.valid && this.isUsernameAvl &&this.checkPasswords()) {
+      const userObj = {
+        UserName:this.UserName,
+        Email: this.Email,
+        Password: this.Password
+      };
+      this.authService.registerUser(userObj).subscribe(data => {
+        if (data.success) {
+          this.isSuccessMessage = true;
+          this.successMessage = data.message;
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
+        } else {
+          this.isErrorMessage = true;
+          this.errorMessage = data.message;
         }
+
+      });
+
     }
+    setTimeout(() => {
+      this.successMessage = false;
+      this.isErrorMessage = false;
+    }, 2000);
+  }
 
-    passwordInputValues(){
-        this.isPasswordMatch = true;
-    }
-
-    register(form){
-       if(form.valid && this.checkPasswords()){
-           const userObj = {
-               Email:this.Email,
-               Password:this.Password
-           };
-           this.authService.registerUser(userObj).subscribe(data => {
-               if(data.success){
-                    this.isSuccessMessage = true;
-                    this.successMessage = data.message;
-                    setTimeout(()=>{
-                        this.router.navigate(['/login']);
-                        },2000);
-                    }else{
-                   this.isErrorMessage  = true;
-                   this.errorMessage = data.message;
-                }
-
-           });
-
-       }
-        setTimeout(()=>{
-            this.successMessage = false;
-            this.isErrorMessage  = false;
-            },2000)
-    }
-
-
-
+  checkUsernameAvailability() {
+    this.authService.checkUserName(this.UserName)
+      .subscribe(data => {
+        if (data.success) {
+          this.isUsernameAvl = true;
+          this.userNameAvailability = data.message;
+        } else {
+          this.userNameAvailability = data.message;
+          this.isUsernameAvl = false;
+        }
+      });
+  }
 }
